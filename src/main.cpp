@@ -13,6 +13,12 @@ void framebuffer_resize(GLFWwindow* window, int new_width, int new_height)
     glViewport(0, 0, new_width, new_height);
 }
 
+void processInput(GLFWwindow *window)
+{
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+}
+
 int main()
 {
     // initialize and configure GLFW
@@ -23,31 +29,30 @@ int main()
 
     // create window and make context current
     GLFWwindow* window = glfwCreateWindow(width, height, "Intro to OpenGL", NULL, NULL);
-    if (window == NULL)
-    {
-        // throw exception
-        std::cout << "GLFW Error" << std::endl;
+    if (window == NULL) {
+      // throw exception
+      std::cout << "GLFW Error" << std::endl;
     }
     glfwMakeContextCurrent(window);
 
     // load address of OpenGL function pointers
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-          std::cout << "GLAD Error" << std::endl;
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+      std::cout << "GLAD Error" << std::endl;
     }
 
     glViewport(0, 0, width, height);
     glfwSetFramebufferSizeCallback(window, framebuffer_resize);
 
-    int shader_program = create_program("", "");
+    //int shader_program = create_program("", "");
 
-    while(!glfwWindowShouldClose(window))
-    {
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+    while(!glfwWindowShouldClose(window)) {
+      processInput(window);
 
-        glfwPollEvents();
-        glfwSwapBuffers(window);
+      glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+      glClear(GL_COLOR_BUFFER_BIT);
+
+      glfwPollEvents();
+      glfwSwapBuffers(window);
     }
 
     glfwTerminate();
