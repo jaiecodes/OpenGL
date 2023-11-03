@@ -18,7 +18,6 @@ set(GLAD_SOURCES
 include_directories(include)
 set(MAIN_SOURCES
     src/main.cpp
-    src/util.cpp
 )
 
 add_executable(${PROJECT_NAME} ${MAIN_SOURCES} ${GLAD_SOURCES})
