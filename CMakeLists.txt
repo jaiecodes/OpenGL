@@ -14,6 +14,9 @@ include_directories(extern/glad/include)
 set(GLAD_SOURCES
     extern/glad/src/glad.c)
 
+# Add GLM
+include_directories(extern/glm)
+
 # Setup source code
 include_directories(include)
 set(MAIN_SOURCES
