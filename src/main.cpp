@@ -174,7 +174,7 @@ int main()
       float lightZ = 1.5f * cos(glfwGetTime());
       lightPos = glm::vec3(lightX, lightY, lightZ);
 
-      float mixFactor = sin(glfwGetTime());
+      float mixFactor = cos(glfwGetTime());
       glm::vec3 lightColor = mix(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 0.8f, 0.0f), mixFactor);
       
       // input
@@ -187,10 +187,19 @@ int main()
 
       // render the triangles
       objectShader.use();
-      objectShader.setVec3("lightPos", lightPos);  
+      objectShader.setVec3("light.position", lightPos);  
       objectShader.setVec3("viewPos", camera.Position); 
-      objectShader.setVec3("objectColor", 0.53f, 0.8f, 0.92f);
-      objectShader.setVec3("lightColor",  lightColor);
+      glm::vec3 diffuseColor = lightColor   * glm::vec3(0.5f); // decrease the influence
+      glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // low influence
+      objectShader.setVec3("light.ambient", ambientColor);
+      objectShader.setVec3("light.diffuse", diffuseColor);
+      objectShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+      // material properties
+      objectShader.setVec3("material.ambient", 0.24725f,	0.1995f, 0.0745f);
+      objectShader.setVec3("material.diffuse", 0.75164f, 0.60648f, 0.22648f);
+      objectShader.setVec3("material.specular", 0.628281f, 0.555802f, 0.366065f); // specular lighting doesn't have full effect on this object's material
+      objectShader.setFloat("material.shininess", 52.0f);
       
 
       glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)width / (float)height, 0.1f, 100.0f);
